@@ -205,6 +205,8 @@ class TrigramBase(Func):
     output_field = FloatField()
 
     def __init__(self, expression, string, **extra):
+        if not hasattr(expression, 'resolve_expression'):
+            expression = Value(expression)
         if not hasattr(string, 'resolve_expression'):
             string = Value(string)
         super().__init__(expression, string, **extra)
@@ -217,3 +219,7 @@ class TrigramSimilarity(TrigramBase):
 class TrigramDistance(TrigramBase):
     function = ''
     arg_joiner = ' <-> '
+
+
+class TrigramWordSimilarity(TrigramBase):
+    function = 'WORD_SIMILARITY'
